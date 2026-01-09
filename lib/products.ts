@@ -1,15 +1,15 @@
-// Product and finishing options data
+// Dados de produtos e opções de acabamento
 
 export interface Product {
   id: string
   name: string
   description: string
-  category: "cards" | "flyers" | "banners" | "brochures"
+  category: 'cards' | 'flyers' | 'banners' | 'brochures'
   materials: Material[]
   templateSize: {
     width: number
     height: number
-    unit: "mm" | "in"
+    unit: 'mm' | 'in'
   }
   trimArea: {
     bleed: number
@@ -31,108 +31,112 @@ export interface FinishingOption {
   additionalCost: number
 }
 
-// Mock products
+// Produtos mock (apenas 2)
 export const PRODUCTS: Product[] = [
   {
-    id: "bc-001",
-    name: "Business Cards",
-    description: "Professional business cards",
-    category: "cards",
-    templateSize: { width: 90, height: 50, unit: "mm" },
+    id: 'cracha-001',
+    name: 'Crachá PVC',
+    description: 'Crachá em PVC para identificação profissional',
+    category: 'cards',
+    templateSize: { width: 10, height: 14, unit: 'mm' },
     trimArea: { bleed: 3, safeZone: 5 },
     materials: [
       {
-        id: "mat-001",
-        name: "350gsm Silk",
-        description: "Premium silk finish cardstock",
-        compatibleFinishing: ["lamination", "spot-uv", "rounded-corners"],
-      },
-      {
-        id: "mat-002",
-        name: "400gsm Matt",
-        description: "Extra thick matt cardstock",
-        compatibleFinishing: ["lamination", "foil", "rounded-corners"],
+        id: 'mat-pvc',
+        name: 'PVC Cartão',
+        description: 'Material PVC resistente para crachás',
+        compatibleFinishing: [
+          'cristal',
+          'holografia',
+          'furo-duplo',
+          'furo-unico-redondo',
+          'furo-unico-quadrado',
+        ],
       },
     ],
   },
   {
-    id: "fly-001",
-    name: "Flyers A5",
-    description: "Standard A5 promotional flyers",
-    category: "flyers",
-    templateSize: { width: 148, height: 210, unit: "mm" },
+    id: 'cordao-001',
+    name: 'Cordão Personalizado',
+    description: 'Cordão personalizado para crachá',
+    category: 'banners',
+    templateSize: { width: 24.899, height: 840, unit: 'mm' },
     trimArea: { bleed: 3, safeZone: 5 },
     materials: [
       {
-        id: "mat-003",
-        name: "170gsm Gloss",
-        description: "High quality gloss paper",
-        compatibleFinishing: ["folding", "perforation"],
-      },
-      {
-        id: "mat-004",
-        name: "200gsm Silk",
-        description: "Premium silk finish",
-        compatibleFinishing: ["folding", "lamination"],
-      },
-    ],
-  },
-  {
-    id: "ban-001",
-    name: "Pull-up Banner",
-    description: "Retractable display banner",
-    category: "banners",
-    templateSize: { width: 850, height: 2000, unit: "mm" },
-    trimArea: { bleed: 0, safeZone: 50 },
-    materials: [
-      {
-        id: "mat-005",
-        name: "Standard PVC",
-        description: "Durable PVC material",
-        compatibleFinishing: ["eyelets"],
-      },
-      {
-        id: "mat-006",
-        name: "Premium Fabric",
-        description: "High-end fabric material",
-        compatibleFinishing: [],
-      },
-    ],
-  },
-  {
-    id: "bro-001",
-    name: "Brochure A4",
-    description: "Professional tri-fold brochures",
-    category: "brochures",
-    templateSize: { width: 297, height: 210, unit: "mm" },
-    trimArea: { bleed: 3, safeZone: 5 },
-    materials: [
-      {
-        id: "mat-007",
-        name: "150gsm Gloss",
-        description: "Standard gloss paper",
-        compatibleFinishing: ["folding", "stapling"],
-      },
-      {
-        id: "mat-008",
-        name: "170gsm Silk",
-        description: "Premium silk finish",
-        compatibleFinishing: ["folding", "stapling", "lamination"],
+        id: 'mat-cordao',
+        name: 'Tecido Poliéster',
+        description: 'Cordão em poliéster resistente',
+        compatibleFinishing: [
+          'puntera-unica',
+          'puntera-dupla',
+          'jacare-metal',
+          'mosquetao-plastico',
+        ],
       },
     ],
   },
 ]
 
-// Mock finishing options
+// Opções de acabamento mock
 export const FINISHING_OPTIONS: FinishingOption[] = [
-  { id: "lamination", name: "Lamination", description: "Protective glossy or matt laminate", additionalCost: 15 },
-  { id: "spot-uv", name: "Spot UV", description: "Selective high-gloss UV coating", additionalCost: 35 },
-  { id: "foil", name: "Foil Stamping", description: "Metallic foil application", additionalCost: 50 },
-  { id: "rounded-corners", name: "Rounded Corners", description: "Rounded corner cutting", additionalCost: 10 },
-  { id: "folding", name: "Folding", description: "Professional folding service", additionalCost: 8 },
-  { id: "perforation", name: "Perforation", description: "Tear-off perforation", additionalCost: 12 },
-  { id: "eyelets", name: "Eyelets", description: "Metal eyelets for hanging", additionalCost: 20 },
-  { id: "stapling", name: "Stapling", description: "Professional stapling", additionalCost: 5 },
+  // Crachá PVC
+  {
+    id: 'cristal',
+    name: 'Cristal',
+    description: 'Acabamento cristal transparente',
+    additionalCost: 10,
+  },
+  {
+    id: 'holografia',
+    name: 'Holografia',
+    description: 'Efeito holográfico decorativo',
+    additionalCost: 25,
+  },
+  {
+    id: 'furo-duplo',
+    name: 'Furo Duplo',
+    description: 'Dois furos para presilha',
+    additionalCost: 8,
+  },
+  {
+    id: 'furo-unico-redondo',
+    name: 'Furo Único Redondo',
+    description: 'Furo único com formato redondo',
+    additionalCost: 6,
+  },
+  {
+    id: 'furo-unico-quadrado',
+    name: 'Furo Único Quadrado',
+    description: 'Furo único com formato quadrado',
+    additionalCost: 6,
+  },
+
+  // Cordão
+  {
+    id: 'puntera-unica',
+    name: 'Ponteira Única',
+    description: 'Uma ponteira de acabamento',
+    additionalCost: 5,
+  },
+  {
+    id: 'puntera-dupla',
+    name: 'Ponteira Dupla',
+    description: 'Duas ponteiras de acabamento',
+    additionalCost: 8,
+  },
+  {
+    id: 'jacare-metal',
+    name: 'Jacaré de Metal',
+    description: 'Clipe tipo jacaré em metal',
+    additionalCost: 12,
+  },
+  {
+    id: 'mosquetao-plastico',
+    name: 'Mosquetão Plástico',
+    description: 'Mosquetão em material plástico',
+    additionalCost: 6,
+  },
 ]
 
 export function getProductById(id: string): Product | undefined {
@@ -143,12 +147,17 @@ export function getFinishingById(id: string): FinishingOption | undefined {
   return FINISHING_OPTIONS.find((f) => f.id === id)
 }
 
-export function getCompatibleFinishing(materialId: string, productId: string): FinishingOption[] {
+export function getCompatibleFinishing(
+  materialId: string,
+  productId: string
+): FinishingOption[] {
   const product = getProductById(productId)
   if (!product) return []
 
   const material = product.materials.find((m) => m.id === materialId)
   if (!material) return []
 
-  return FINISHING_OPTIONS.filter((f) => material.compatibleFinishing.includes(f.id))
+  return FINISHING_OPTIONS.filter((f) =>
+    material.compatibleFinishing.includes(f.id)
+  )
 }

@@ -1,7 +1,7 @@
 // Artwork validation utilities
 
 export interface ArtworkValidationResult {
-  status: "ok" | "needs-adjustment"
+  status: 'ok' | 'needs-adjustment'
   messages: string[]
   details: {
     sizeMatch: boolean
@@ -9,25 +9,31 @@ export interface ArtworkValidationResult {
     safeZoneOk: boolean
   }
 }
+// contador de validações realizadas
+let validationCount = 0
 
 export function validateArtwork(
   file: File,
   templateSize: { width: number; height: number; unit: string },
-  trimArea: { bleed: number; safeZone: number },
+  trimArea: { bleed: number; safeZone: number }
 ): ArtworkValidationResult {
-  // Mock validation - in real app, this would analyze the actual file
-  // For demo purposes, we'll randomly assign validation results
+  validationCount++
 
-  const random = Math.random()
+  // 👉 padrão: 1 bom + 2 com ajuste
+  // 1 = OK
+  // 2 = ajuste
+  // 3 = ajuste
+  const position = validationCount % 3
 
-  if (random > 0.3) {
-    // 70% chance of artwork being OK
+  // 🔹 Sempre OK no primeiro e no ciclo 1
+  if (position === 1) {
     return {
-      status: "ok",
+      status: 'ok',
       messages: [
-        "Artwork dimensions match the template size",
-        "Design is within the safe zone",
-        "Bleed area is correctly set up",
+        'Arte final aprovada',
+        'As dimensões correspondem ao template',
+        'Todo o conteúdo está dentro da área segura',
+        'Sangria configurada corretamente',
       ],
       details: {
         sizeMatch: true,
@@ -35,38 +41,39 @@ export function validateArtwork(
         safeZoneOk: true,
       },
     }
+  }
+
+  // 🔸 Nos outros dois casos → precisa de ajuste
+  // ainda escolhemos qual erro usando random
+  const random = Math.random()
+
+  const issues: string[] = []
+  const details = {
+    sizeMatch: true,
+    trimAreaOk: true,
+    safeZoneOk: true,
+  }
+
+  if (random < 0.33) {
+    issues.push(
+      `O tamanho da arte não corresponde ao template (${templateSize.width}x${templateSize.height}${templateSize.unit})`
+    )
+    details.sizeMatch = false
+  } else if (random < 0.66) {
+    issues.push(
+      `A arte ultrapassa a área de corte. É necessário bleed de ${trimArea.bleed}${templateSize.unit}.`
+    )
+    details.trimAreaOk = false
   } else {
-    // 30% chance of issues
-    const issues: string[] = []
-    const details = {
-      sizeMatch: true,
-      trimAreaOk: true,
-      safeZoneOk: true,
-    }
+    issues.push(
+      `Conteúdo importante está fora da área segura. Mantenha o conteúdo a ${trimArea.safeZone}${templateSize.unit} das bordas.`
+    )
+    details.safeZoneOk = false
+  }
 
-    if (random < 0.1) {
-      issues.push(
-        `Artwork size does not match template (${templateSize.width}x${templateSize.height}${templateSize.unit})`,
-      )
-      details.sizeMatch = false
-    }
-
-    if (random >= 0.1 && random < 0.2) {
-      issues.push(`Design extends beyond the trim area. Bleed of ${trimArea.bleed}${templateSize.unit} required.`)
-      details.trimAreaOk = false
-    }
-
-    if (random >= 0.2 && random < 0.3) {
-      issues.push(
-        `Important content is outside the safe zone. Keep content ${trimArea.safeZone}${templateSize.unit} from edges.`,
-      )
-      details.safeZoneOk = false
-    }
-
-    return {
-      status: "needs-adjustment",
-      messages: issues,
-      details,
-    }
+  return {
+    status: 'needs-adjustment',
+    messages: issues,
+    details,
   }
 }
