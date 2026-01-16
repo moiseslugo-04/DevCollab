@@ -22,7 +22,7 @@ export default async function MaterialPage() {
       status: acabamento.status,
     }
   }
-  const parseMaterial = material.map((finished) => mapAcabamentoToUI(finished))
+  const parseMaterial = material?.map((finished) => mapAcabamentoToUI(finished))
 
   return (
     <>
@@ -36,6 +36,9 @@ export default async function MaterialPage() {
       </div>
 
       <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+        {parseMaterial.length === 0 && (
+          <p className='text-muted-foreground'>No hay materiales</p>
+        )}
         {parseMaterial.map((product) => (
           <Card key={product.id}>
             <CardHeader>
