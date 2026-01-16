@@ -123,16 +123,6 @@ export default function AdminFinishingPage() {
                     </p>
                   )}
                 </div>
-
-                <Button
-                  variant='outline'
-                  size='sm'
-                  className='w-full bg-transparent'
-                  onClick={() => handleEditFinishing(finishing)}
-                >
-                  <Edit className='mr-2 h-3 w-3' />
-                  Edit Option
-                </Button>
               </CardContent>
             </Card>
           )

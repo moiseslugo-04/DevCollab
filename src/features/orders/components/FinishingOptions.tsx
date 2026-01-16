@@ -54,7 +54,7 @@ export function FinishingOptions({
           Select quantity and compatible finishing options
         </CardDescription>
       </CardHeader>
-      <CardContent className='space-y-6'>
+      <CardContent className='space-y-4'>
         <div>
           <Label htmlFor='quantity' className='text-base font-semibold'>
             Quantity
@@ -70,13 +70,13 @@ export function FinishingOptions({
         </div>
 
         <div>
-          <Label className='text-base font-semibold mb-4 block'>
+          <Label className='text-base font-semibold mb-2 block'>
             Finishing Options
           </Label>
-          <p className='text-sm text-muted-foreground mb-4'>
+          <p className='text-sm text-muted-foreground mb-2'>
             Only compatible options for your selected material are shown
           </p>
-          <div className='space-y-3'>
+          <div className='grid grid-cols-2 gap-2'>
             {getCompatibleFinishing(selectedMaterial, productId).map(
               (finishing) => (
                 <div

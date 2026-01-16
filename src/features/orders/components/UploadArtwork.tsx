@@ -81,25 +81,25 @@ export function UploadArtwork({
   }
 
   return (
-    <Card>
+    <Card className='overflow-y-scroll'>
       <CardHeader>
-        <CardTitle>Upload Your Artwork</CardTitle>
+        <CardTitle>Envie sua arte</CardTitle>
         <CardDescription>
-          Upload PDF, PNG, or JPG files. We'll validate your artwork
-          automatically.
+          Faça o upload de arquivos PDF, PNG ou JPG. Validaremos sua arte
+          automaticamente.%
         </CardDescription>
       </CardHeader>
 
-      <CardContent className='space-y-6'>
+      <CardContent className='space-y-3  overflow-scroll'>
         <Label
           htmlFor='artwork-upload'
-          className='flex justify-center items-center  flex-col border-2 border-dashed border-border rounded-lg p-12 text-center '
+          className='flex justify-center items-center  flex-col border-2 border-dashed border-border rounded-lg px-12  py-8 text-center '
         >
           <div className=''>
-            <Upload className='mx-auto h-12 w-12 text-muted-foreground mb-4' />
+            <Upload className='mx-auto h-10 w-12 text-muted-foreground mb-2' />
 
-            <p className='cursor-pointer text-primary hover:text-primary/80 font-medium text-lg'>
-              Click to upload or drag and drop
+            <p className='cursor-pointer text-primary hover:text-primary/80 font-medium text-lg mx-auto'>
+              Clique para carregar ou arraste e solte.
             </p>
 
             <Input
@@ -119,7 +119,7 @@ export function UploadArtwork({
         {isProcessing && (
           <Alert>
             <Loader2 className='h-4 w-4 animate-spin' />
-            <AlertDescription>Validating your artwork...</AlertDescription>
+            <AlertDescription>...</AlertDescription>
           </Alert>
         )}
 
@@ -129,35 +129,13 @@ export function UploadArtwork({
               variant={
                 artworkValidation.status === 'ok' ? 'default' : 'destructive'
               }
-              className={
-                artworkValidation.status === 'ok'
-                  ? 'border-green-500 text-green-700 bg-green-50'
-                  : 'border-amber-500 text-amber-700 bg-amber-50'
-              }
+              className='border-green-500 text-green-700 bg-green-50'
             >
-              {artworkValidation.status === 'ok' ? (
-                <CheckCircle className='h-4 w-4' />
-              ) : (
-                <AlertTriangle className='h-4 w-4' />
-              )}
+              <CheckCircle className='h-4 w-4' />
               <AlertDescription>
-                <p className='font-semibold mb-2'>
-                  {artworkValidation.status === 'ok'
-                    ? 'Artwork OK for production'
-                    : 'Artwork requires manual adjustment'}
+                <p className='font-semibold mb-2 text-black'>
+                  Artwork OK for production
                 </p>
-                <ul className='list-disc list-inside space-y-1'>
-                  {artworkValidation.messages.map((msg, idx) => (
-                    <li key={idx} className='text-sm'>
-                      {msg}
-                    </li>
-                  ))}
-                </ul>
-                {artworkValidation.status === 'needs-adjustment' && (
-                  <p className='text-sm mt-2 font-medium'>
-                    Additional cost: $25.00 for manual adjustment
-                  </p>
-                )}
               </AlertDescription>
             </Alert>
 

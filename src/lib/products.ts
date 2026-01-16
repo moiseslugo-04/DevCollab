@@ -17,6 +17,69 @@ export interface Product {
   }
 }
 
+//Finished
+export type SimNao = 'Sim' | 'Não'
+export type Status = 'Ativo' | 'Inativo'
+
+export interface Finished {
+  id: number
+  categoria: string
+  nome: string
+  tipo: string
+
+  unidade_custo: string
+  unidade_movimentacao: string
+
+  usinagem: SimNao
+  corte: SimNao
+  vinco: SimNao
+  rebaixo: SimNao
+  gravacao: SimNao
+  fracionamento: SimNao
+  sem_emenda: SimNao
+
+  controle_estoque: SimNao
+  girar_material: SimNao
+
+  venda_direta: number
+
+  percentual_mark_up: string
+  percentual_margem_liquida_minima: string
+  percentual_margem_liquida_padrao: string
+
+  valor_preco_final: number
+  valor_custo: number
+
+  descricao: string
+
+  codigo_fiscal: string
+  ncm: string
+  cest: string
+  gtin: string
+  codigo_beneficio: string
+
+  cfop: number
+  cst_icms: number
+  percentual_ipi: string
+  enquadramento_ipi: string
+  cst_ipi: string
+  ipi_incluso: SimNao
+
+  descricao_fiscal: string
+
+  percentual_ipi_compra: string
+  percentual_difal_compra: string
+  percentual_frete_compra: string
+
+  creditos_icms: string
+  creditos_ipi: string
+
+  data_referencia: string // ISO date
+  tempo_defasagem: number
+
+  status: Status
+}
+
 export interface Material {
   id: string
   name: string
@@ -30,7 +93,7 @@ export interface FinishingOption {
   description: string
   additionalCost: number
 }
-export interface AcabamentoUI {
+export interface FinishedUI {
   id: number
   nome: string
   categoria: string

@@ -2,7 +2,6 @@
 
 import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { DashboardLayout } from '@/components/dashboard-layout'
 import {
   Card,
   CardContent,
@@ -24,6 +23,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Package, Plus, FileText, CheckCircle, AlertCircle } from 'lucide-react'
 import { getCurrentUser } from '@/lib/auth'
 import { getUserOrders, type Order } from '@/lib/orders'
+import { UserProductsList } from '@/features/products/components/UserProductLists'
 
 function DashboardContent() {
   const router = useRouter()
@@ -70,10 +70,13 @@ function DashboardContent() {
   ).length
 
   return (
-    <DashboardLayout
-      title='My Dashboard'
-      description='Manage your orders and create new ones'
-    >
+    <section>
+      <div className='mb-8'>
+        <h2 className='text-3xl font-bold text-balance'>My Dashboard</h2>
+        <p className='text-muted-foreground mt-2'>
+          Gerencie seus pedidos e crie novos.
+        </p>
+      </div>
       {showSuccessMessage && (
         <Alert className='mb-6 bg-green-50 border-green-200'>
           <CheckCircle className='h-4 w-4 text-green-600' />
@@ -90,60 +93,9 @@ function DashboardContent() {
       )}
 
       {/* Stats Cards */}
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8'>
-        <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>
-              Total de Pedidos
-            </CardTitle>
-            <Package className='h-4 w-4 text-muted-foreground' />
-          </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold'>{totalOrders}</div>
-            <p className='text-xs text-muted-foreground'>All time</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Em Andamento</CardTitle>
-            <FileText className='h-4 w-4 text-muted-foreground' />
-          </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold'>{pendingOrders}</div>
-            <p className='text-xs text-muted-foreground'>Pedidos ativos</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Concluídos</CardTitle>
-            <CheckCircle className='h-4 w-4 text-muted-foreground' />
-          </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold'>{completedOrders}</div>
-            <p className='text-xs text-muted-foreground'>Pedidos finalizados</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>
-              Problemas na Arte
-            </CardTitle>
-            <AlertCircle className='h-4 w-4 text-muted-foreground' />
-          </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold'>{artworkIssues}</div>
-            <p className='text-xs text-muted-foreground'>
-              Necessitam de atenção
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
+      <UserProductsList />
       {/* Quick Actions */}
-      <div className='mb-8'>
+      <div className='my-8'>
         <Card className='bg-gradient-to-r from-primary/10 via-primary/5 to-accent/10 border-primary/20'>
           <CardHeader>
             <CardTitle>Pronto para criar um novo pedido?</CardTitle>
@@ -261,7 +213,7 @@ function DashboardContent() {
           )}
         </CardContent>
       </Card>
-    </DashboardLayout>
+    </section>
   )
 }
 

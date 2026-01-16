@@ -1,4 +1,5 @@
 'use client'
+
 import {
   Card,
   CardContent,
@@ -10,61 +11,106 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Loader2, Send } from 'lucide-react'
-import { FINISHING_OPTIONS, Product } from '@/lib/products'
+import { ArrowLeft, Send } from 'lucide-react'
+import { FINISHING_OPTIONS } from '@/lib/products'
 import { ArtworkStatus } from '@/lib/orders'
 import { OrderProduct } from '@/features/orders/hooks/useOrderReview'
 import { ArtworkValidationResult } from '@/lib/artwork-validator'
 import { useState } from 'react'
+
 interface Props {
-  isProcessing: boolean
   calculateTotal: (
     quantity: number,
     finishes: string[],
     status: ArtworkStatus
   ) => number
-  submitOrder: () => Promise<void>
   quantity: number
   product: OrderProduct
   artworkFile: File
   artworkValidation: ArtworkValidationResult
   prev: () => void
 }
+
 export function Review({
-  isProcessing,
   calculateTotal,
-  submitOrder,
   product,
   quantity,
   artworkFile,
   artworkValidation,
   prev,
 }: Props) {
-  const [orderNotes, setOrderNotes] = useState<string>('')
+  const [orderNotes, setOrderNotes] = useState('')
+
+  const materialName = product.materials.find(
+    (m) => m.id === product.material
+  )?.name
+
+  const finishingNames =
+    product.finishes.length > 0
+      ? product.finishes
+          .map((fId) => FINISHING_OPTIONS.find((f) => f.id === fId)?.name)
+          .join(', ')
+      : 'Nenhum'
+
+  const total = calculateTotal(
+    quantity,
+    product.finishes,
+    artworkValidation.status
+  ).toFixed(2)
+
+  const mailtoLink = `mailto:enviodl@gmail.com?subject=${encodeURIComponent(
+    `Pedido - ${product.name}`
+  )}&body=${encodeURIComponent(`
+Olá,
+
+Gostaria de realizar o seguinte pedido:
+
+Produto: ${product.name}
+Material: ${materialName}
+Quantidade: ${quantity}
+Acabamentos: ${finishingNames}
+
+Arquivo de arte: ${artworkFile.name}
+Status da arte: ${
+    artworkValidation.status === 'ok'
+      ? 'OK para produção'
+      : 'Necessita ajuste manual'
+  }
+
+Total estimado: R$ ${total}
+
+Observações:
+${orderNotes || 'Sem observações'}
+
+Obrigado.
+`)}`
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Review Your Order</CardTitle>
+        <CardTitle>Revisar pedido</CardTitle>
         <CardDescription>
-          Please review your order details before submitting
+          Revise os detalhes do pedido antes de enviar
         </CardDescription>
       </CardHeader>
+
       <CardContent className='space-y-6'>
         <div className='grid gap-6 md:grid-cols-2'>
           <div className='space-y-4'>
             <div>
-              <Label className='text-sm text-muted-foreground'>Product</Label>
+              <Label className='text-sm text-muted-foreground'>Produto</Label>
               <p className='font-medium'>{product.name}</p>
             </div>
+
             <div>
               <Label className='text-sm text-muted-foreground'>Material</Label>
-              <p className='font-medium'>
-                {product.materials.find((m) => m.id === product.material)?.name}
-              </p>
+              <p className='font-medium'>{materialName}</p>
             </div>
+
             <div>
-              <Label className='text-sm text-muted-foreground'>Quantity</Label>
+              <Label className='text-sm text-muted-foreground'>
+                Quantidade
+              </Label>
               <p className='font-medium'>{quantity}</p>
             </div>
           </div>
@@ -72,13 +118,14 @@ export function Review({
           <div className='space-y-4'>
             <div>
               <Label className='text-sm text-muted-foreground'>
-                Artwork File
+                Arquivo de arte
               </Label>
               <p className='font-medium'>{artworkFile.name}</p>
             </div>
+
             <div>
               <Label className='text-sm text-muted-foreground'>
-                Artwork Status
+                Status da arte
               </Label>
               <Badge
                 variant={
@@ -87,17 +134,20 @@ export function Review({
                 className='mt-1'
               >
                 {artworkValidation.status === 'ok'
-                  ? 'OK for production'
-                  : 'Needs manual adjustment'}
+                  ? 'OK para produção'
+                  : 'Necessita ajuste manual'}
               </Badge>
             </div>
+
             <div>
               <Label className='text-sm text-muted-foreground'>
-                Finishing Options
+                Acabamentos
               </Label>
               <div className='flex flex-wrap gap-2 mt-1'>
                 {product.finishes.length === 0 ? (
-                  <p className='text-sm text-muted-foreground'>None selected</p>
+                  <p className='text-sm text-muted-foreground'>
+                    Nenhum selecionado
+                  </p>
                 ) : (
                   product.finishes.map((fId) => {
                     const finishing = FINISHING_OPTIONS.find(
@@ -117,26 +167,19 @@ export function Review({
 
         <div className='border-t pt-4'>
           <div className='flex justify-between items-center text-lg font-semibold'>
-            <span>Estimated Total:</span>
-            <span className='text-2xl text-primary'>
-              $
-              {calculateTotal(
-                quantity,
-                product.finishes,
-                artworkValidation.status
-              ).toFixed(2)}
-            </span>
+            <span>Total estimado:</span>
+            <span className='text-2xl text-primary'>R$ {total}</span>
           </div>
           <p className='text-sm text-muted-foreground mt-1'>
-            Payment required before production begins
+            Pagamento necessário antes do início da produção
           </p>
         </div>
 
         <div>
-          <Label htmlFor='notes'>Order Notes (Optional)</Label>
+          <Label htmlFor='notes'>Observações do pedido (opcional)</Label>
           <Textarea
             id='notes'
-            placeholder='Add any special instructions or notes for your order...'
+            placeholder='Adicione instruções ou observações...'
             value={orderNotes}
             onChange={(e) => setOrderNotes(e.target.value)}
             className='mt-2'
@@ -144,22 +187,16 @@ export function Review({
         </div>
 
         <div className='flex justify-between'>
-          <Button variant='outline' onClick={() => prev()}>
+          <Button variant='outline' onClick={prev}>
             <ArrowLeft className='mr-2 h-4 w-4' />
-            Back
+            Voltar
           </Button>
-          <Button onClick={submitOrder} disabled={isProcessing}>
-            {isProcessing ? (
-              <>
-                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                Processing...
-              </>
-            ) : (
-              <>
-                <Send className='mr-2 h-4 w-4' />
-                Submit Order
-              </>
-            )}
+
+          <Button asChild>
+            <a href={mailtoLink}>
+              <Send className='mr-2 h-4 w-4' />
+              Enviar pedido
+            </a>
           </Button>
         </div>
       </CardContent>

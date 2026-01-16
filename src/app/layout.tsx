@@ -4,7 +4,6 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { Toaster } from 'sonner'
-import { Header } from '@/components/shared/Header'
 
 const _geist = Geist({ subsets: ['latin'] })
 const _geistMono = Geist_Mono({ subsets: ['latin'] })
@@ -38,14 +37,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='en'>
+    <html lang='pt'>
       <body className={`font-sans antialiased p-4`} suppressHydrationWarning>
-        <div className='min-h-fit bg-background '>
-          <Header />
-          {/* Main Content */}
-          <main className='container py-8'>{children}</main>
-        </div>
         <Analytics />
+        {children}
         <Toaster
           closeButton
           position='top-center'

@@ -18,7 +18,7 @@ export function useLogin() {
     const result = await login(email, password)
 
     if (result.success && result.user) {
-      router.push(result.user.role === 'admin' ? '/admin' : '/dashboard')
+      router.push(result.user.role === 'admin' ? '/admin' : '/')
     } else {
       setError(result.error || 'Login failed')
       setIsLoading(false)

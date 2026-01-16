@@ -3,7 +3,6 @@ export const ROUTES = {
   admin: {
     root: '/admin',
     products: '/admin/products',
-    finishing: '/admin/finishing',
     Materials: '/admin/materials',
   },
 

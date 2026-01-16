@@ -2,7 +2,6 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { DashboardLayout } from '@/components/dashboard-layout'
 import {
   Card,
   CardContent,
@@ -59,10 +58,15 @@ function PaymentContent() {
 
   if (!order) {
     return (
-      <DashboardLayout
-        title='Pagamento Necessário'
-        description='Conclua o pagamento para processar seu pedido'
-      >
+      <section>
+        <div className='mb-8'>
+          <h2 className='text-3xl font-bold text-balance'>
+            Pagamento Necessário
+          </h2>
+          <p className='text-muted-foreground mt-2'>
+            Conclua o pagamento para processar seu pedido
+          </p>
+        </div>
         <Card>
           <CardContent className='p-12 text-center'>
             <p className='text-muted-foreground'>
@@ -70,7 +74,7 @@ function PaymentContent() {
             </p>
           </CardContent>
         </Card>
-      </DashboardLayout>
+      </section>
     )
   }
 
