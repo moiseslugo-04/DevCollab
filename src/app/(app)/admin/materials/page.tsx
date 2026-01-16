@@ -9,8 +9,20 @@ import {
 } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { DollarSign } from 'lucide-react'
+
+export const dynamic = 'force-dynamic' // 🔑 evita prerender en build
+
 export default async function MaterialPage() {
-  const material: Finished[] = await getMaterialsList()
+  let material: Finished[] = []
+
+  try {
+    const response = await getMaterialsList()
+    material = Array.isArray(response) ? response : []
+  } catch (error) {
+    console.error('Error loading materials:', error)
+    material = []
+  }
+
   function mapAcabamentoToUI(acabamento: Finished): FinishedUI {
     return {
       id: acabamento.id,
@@ -22,7 +34,8 @@ export default async function MaterialPage() {
       status: acabamento.status,
     }
   }
-  const parseMaterial = material?.map((finished) => mapAcabamentoToUI(finished))
+
+  const parseMaterial: FinishedUI[] = material.map(mapAcabamentoToUI)
 
   return (
     <>
@@ -39,6 +52,7 @@ export default async function MaterialPage() {
         {parseMaterial.length === 0 && (
           <p className='text-muted-foreground'>No hay materiales</p>
         )}
+
         {parseMaterial.map((product) => (
           <Card key={product.id}>
             <CardHeader>
@@ -53,28 +67,8 @@ export default async function MaterialPage() {
               </div>
               <CardDescription>{product.categoria}</CardDescription>
             </CardHeader>
-            <CardContent className='space-y-3'>
-              {/*     <div className='text-sm'>
-                  <p className='text-muted-foreground mb-2'>Compatible with:</p>
-                  {compatibleProducts.length > 0 ? (
-                    <div className='flex flex-wrap gap-1'>
-                      {compatibleProducts.map((product) => (
-                        <Badge
-                          key={product.id}
-                          variant='outline'
-                          className='text-xs'
-                        >
-                          {product.name}
-                        </Badge>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className='text-xs text-muted-foreground'>
-                      No products assigned yet
-                    </p>
-                  )}
-                </div> */}
-            </CardContent>
+
+            <CardContent className='space-y-3' />
           </Card>
         ))}
       </div>
